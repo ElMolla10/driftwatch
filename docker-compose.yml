@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: driftwatch-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: driftwatch
+    ports:
+      - "5432:5432"
+    volumes:
+      - driftwatch_pg:/var/lib/postgresql/data
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
+      - ./ml_observability_mvp/schema.sql:/docker-entrypoint-initdb.d/10_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d driftwatch"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  metabase:
+    image: metabase/metabase:v0.48.10
+    container_name: driftwatch-metabase
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # Metabase internal app DB (separate from driftwatch analytics DB)
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: postgres
+      MB_DB_PASS: password
+      MB_DB_HOST: postgres
+    ports:
+      - "3000:3000"
+
+volumes:
+  driftwatch_pg:

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ml_observability_mvp"
+version = "0.1.0"
+description = "Minimal, global ML observability MVP using Python + Postgres"
+authors = [{name = "Anti Gravity", email = "antigravity@example.com"}]
+dependencies = [
+    "psycopg2-binary>=2.9",
+    "pandas>=2.0",
+    "pydantic>=2.0",
+    "click>=8.0",
+    "tabulate>=0.9",
+    "numpy>=1.20"
+]
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sdk*", "jobs*", "cli*"]
