@@ -98,8 +98,6 @@ These cards are simple, high-signal, and work well for a single clean dashboard.
 
 ## Screenshots
 
-Add images under `docs/screenshots/` and embed them here:
-
 ![DriftWatch Dashboard](docs/screenshots/dashboard.png)
 
 ---
